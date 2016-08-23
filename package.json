@@ -1,0 +1,30 @@
+{
+  "name": "spiked-tea",
+  "version": "0.0.0",
+  "description": "A spiking neural network implementation.",
+  "main": "src/spiked-tea.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/turbomaze/spiked-tea.git"
+  },
+  "keywords": [
+    "spiking neural network",
+    "neural network",
+    "artificial intelligence",
+    "machine learning",
+    "temporal",
+    "biologically plausible"
+  ],
+  "contributors": ["Anthony Liu", "Kyle Bridburg"],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/turbomaze/spiked-tea/issues"
+  },
+  "homepage": "https://github.com/turbomaze/spiked-tea#readme"
+}
