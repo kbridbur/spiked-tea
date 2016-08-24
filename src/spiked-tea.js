@@ -9,6 +9,13 @@ class SNN {
   }
 }
 
+var config = require('./config.js');
+// use as:
+config.timeDelayMs
+config.T_r
+config.T_f
+config.y
+
 module.exports = function() {
   return new SNN();
 };
@@ -21,7 +28,7 @@ class Neuron{
   
   GetOutput(inputs){
     //find the value of time that the inputs, when passed into the input function
-    for (i = 0; i < 64;i++){
+    for (i = 0; i < config.timeDelayMs;i++){
       summation = 0;
       for (j = 0; j < this.inputs.length; j++){
         weight = this.inputs[j][1];
@@ -41,16 +48,23 @@ class Cluster{
   constructor(neurons, connections, inputs){
     this.neurons = neurons;
     this.connections = connections;
-    this.inputs = NormalizeInputs(inputs);
+    this.inputs = ParseInputs(inputs);
   }
   
   DistributeInputs(){
     //Distribute inputs to the proper neurons based on connections
   }
   
-  NormalizeInputs(inputs){
+  ParseInputs(inputs){
     //Take the inputs which are in the form of times and normalize them (remember some will be null)
+    //normalize
+    parsedInputs = [];
+    normalizedInputs = []
     min = minimum(inputs)
+    for (i = 0; i < inputs.length; i++){normalizedInputs.push(inputs[i] === null ? null : inputs[i]%min)}
+    //assign weights
+    orderedInputs = normalizedInputs.sort(sortArr);
+    
   }
   
   GetOutputs(){
@@ -65,36 +79,47 @@ class Cluster{
 
 class Inhibitor{
   //culls inputs between layers of neurons based on strength
-  constructor(){
+  constructor(inputs){
+    this.inputs = inputs;
+  }
+  
+  CullInputs(){
     
   }
+  
 }
 
 class Layer{
   //contains clusters, may have multiple time scales within but has no interconnecting neurons
   constructor(inhibitor : Inhibitor, clusters, inputs){
-    
+    this.inhibitor = inhibitor;
+    this.clusters = clusters;
+    this.inputs = inputs;
   }
 }
 
 function EvaluateInput(input : float, time_since_recieved : float) : float{
   if (time_since_recieved < 0){
     return 0;
-  } else if (time_since_recieved < 10+2(input-1)){
-    return input*time_since_recieved/10;
-  } else if (time_since_recieved < 50+2(input-1)){
-    return input*(1-time_since_recieved/50);
+  } else if (time_since_recieved < config.T_r+config.y(input-1)){
+    return input*time_since_recieved/config.T_r;
+  } else if (time_since_recieved < config.T_r+config.T_f+config.y(input-1)){
+    return input*(1-time_since_recieved/(config.T_r + config.T_f);
   } else {
     return 0;
   } 
 }
 
-function minimum(a) {
-  var min=a[0]; for(var i=0,j=a.length;i<j;i++){min = (a[i] < min) && (a[i] !== null) ? a[i] : min;}
+function minimum(a){
+  var min = a[0]; for(var i = 0, j = a.length; i < j; i++){min = (a[i] < min) ? a[i] : min;}
   return min;
 }
 
-function maximum(a) {
-  var max=a[0]; for(var i=0,j=a.length;i<j;i++){max = (a[i] > max) && (a[i] !== null) ? a[i] : max;}
+function maximum(a){
+  var max = a[0]; for(var i = 0 , j = a.length; i<j; i++){max = (a[i] > max) ? a[i] : max;}
   return max;
+}
+
+function sortArr(a, b){
+  return b-a;
 }
