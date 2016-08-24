@@ -22,15 +22,15 @@ class Neuron{
   OnRecieveInput(input){
     time_recieved = //something to tell the time
     //find the value of time that the inputs, when passed into the input function
-    this.inputs.push([input, time_recieved]);
-    for (i = time_recieved; i < time_recieved + /*some amount of time so that the newest input = 0*/;i += /*Increment by milliseconds*/){
+    this.inputs.push(input);
+    for (i = 0; i < /*some amount of time so that the newest input = 0*/;i += /*Increment by milliseconds*/){
       summation = 0;
       for (j = 0; j < this.inputs.length; j++){
         summation += GetTimeAlteredInputValue(this.inputs[j][0], i - this.inputs[j][0]);
       }
       if (summation >= threshhold){
-        Output(i)
-        return
+        Output(i);
+        return;
       }
     }
   }
@@ -43,13 +43,34 @@ class Neuron{
 
 }
 
+class Cluster{
+  //group of neurons all on the same global time scale
+  
+}
+
+class Inhibitor{
+  //culls inputs between layers of neurons based on strength
+  
+}
+
+class Layer{
+  //contains clusters, may have multiple time scales within but has no interconnecting neurons
+  
+}
+
+
+
+
 function EvaluateInput(input : float, time_since_recieved : float) : float{
   if (input < 0){
     return 0;
+  }
+  if (time_since_recieved < 0){
+    return 0;
   } else if (time_since_recieved < 10+2(input-1)){
-    return //monotonic increasing function
+    return input*time_since_recieved/10;
   } else if (time_since_recieved < 50+2(input-1)){
-    return //montonic decreasing function
+    return input*(1-time_since_recieved/50);
   } else {
     return 0;
   }
