@@ -59,7 +59,7 @@ class Cluster{
     min = config.minimum(inputs)
     for (i = 0; i < inputs.length; i++){normalizedInputs.push(inputs[i] === null ? null : inputs[i]%min);}
     //assign weights
-    orderedInputs = normalizedInputs.sort(config.sortArr);
+    orderedInputs = set(normalizedInputs).sort(config.sortArr);
     for (i = 0; i < inputs.length; i++){
       for (j = 0; j < inputs.length; j++){
         if (orderedInputs[i] === normalizedInputs[j]){
