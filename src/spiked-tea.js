@@ -29,7 +29,7 @@ class Neuron{
       for (j = 0; j < this.inputs.length; j++){
         weight = this.inputs[j][1];
         time_recieved = this.inputs[j][0];
-        summation += time_recieved === null ? 0 : GetTimeAlteredInputValue(weight, i - time_recieved);
+        summation += time_recieved === null ? 0 : config.EvaluateInput(weight, i - time_recieved);
       }
       if (summation >= threshhold){
         return i;
@@ -99,16 +99,4 @@ class Layer{
     this.clusters = clusters;
     this.inputs = inputs;
   }
-}
-
-function EvaluateInput(input : float, time_since_recieved : float) : float{
-  if (time_since_recieved < 0){
-    return 0;
-  } else if (time_since_recieved < config.T_r+config.y(input-1)){
-    return input*time_since_recieved/config.T_r;
-  } else if (time_since_recieved < config.T_r+config.T_f+config.y(input-1)){
-    return input*(1-time_since_recieved/(config.T_r + config.T_f);
-  } else {
-    return 0;
-  } 
 }
