@@ -56,10 +56,10 @@ class Cluster{
     //normalize
     parsedInputs = [];
     normalizedInputs = []
-    min = minimum(inputs)
+    min = config.minimum(inputs)
     for (i = 0; i < inputs.length; i++){normalizedInputs.push(inputs[i] === null ? null : inputs[i]%min);}
     //assign weights
-    orderedInputs = normalizedInputs.sort(sortArr);
+    orderedInputs = normalizedInputs.sort(config.sortArr);
     for (i = 0; i < inputs.length; i++){
       for (j = 0; j < inputs.length; j++){
         if (orderedInputs[i] === normalizedInputs[j]){
@@ -111,18 +111,4 @@ function EvaluateInput(input : float, time_since_recieved : float) : float{
   } else {
     return 0;
   } 
-}
-
-function minimum(a){
-  var min = a[0]; for(var i = 0, j = a.length; i < j; i++){min = (a[i] < min) ? a[i] : min;}
-  return min;
-}
-
-function maximum(a){
-  var max = a[0]; for(var i = 0 , j = a.length; i<j; i++){max = (a[i] > max) ? a[i] : max;}
-  return max;
-}
-
-function sortArr(a, b){
-  return b-a;
 }
