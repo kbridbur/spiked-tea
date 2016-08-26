@@ -10,11 +10,7 @@ class SNN {
 }
 
 var config = require('./config.js');
-// use as:
-config.timeDelayMs
-config.T_r
-config.T_f
-config.y
+
 
 module.exports = function() {
   return new SNN();
