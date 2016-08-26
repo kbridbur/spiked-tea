@@ -47,8 +47,8 @@ class Cluster{
     this.inputs = ParseInputs(inputs);
   }
   
-  DistributeInputs(){
-    //Distribute inputs to the proper neurons based on connections
+  SetInputs(newInputs){
+    this.inputs = ParseInputs(newInputs);
   }
   
   ParseInputs(inputs){
