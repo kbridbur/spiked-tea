@@ -3,12 +3,6 @@
 // @author Kyle Bridburg
 // @date 2016-08-22
 
-class SNN {
-  learn() {
-    return 1;
-  }
-}
-
 var config = require('./config.js');
 
 
@@ -20,6 +14,10 @@ class Neuron{
   constructor(threshold : float){
     this.inputs = [];  
     this.threshhold = threshhold;
+  }
+  
+  SetInputs(newInputs){
+    this.inputs = newInputs;
   }
   
   GetOutput(inputs){
@@ -114,5 +112,20 @@ class Layer{
   
   SendOutputs(){
     //somehow connect to next layer
+  }
+}
+
+class SNN {
+  constructor(numLayers, numClusters, numNeurons){
+    this.neurons = config.fillArray(Neuron(config.threshhold), numNeurons);
+    this.clusters = config.fillArray(Cluster(this.neurons, []), numClusters);
+    this.layers = config.fillArray(Layer(), numLayers);
+  }
+  
+  Simulate(inputs){
+    
+  }
+  learn() {
+    return 1;
   }
 }
