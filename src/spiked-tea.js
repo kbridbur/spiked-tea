@@ -41,9 +41,8 @@ class Neuron{
 
 class Cluster{
   //group of neurons all on the same global time scale
-  constructor(neurons, connections, inputs){
+  constructor(neurons, inputs){
     this.neurons = neurons;
-    this.connections = connections;
     this.inputs = ParseInputs(inputs);
   }
   
@@ -94,9 +93,21 @@ class Inhibitor{
 
 class Layer{
   //contains clusters, may have multiple time scales within but has no interconnecting neurons
-  constructor(inhibitor : Inhibitor, clusters, inputs){
+  constructor(inhibitor : Inhibitor, clusters, inputs, incomingConnections, outgoingConnections){
     this.inhibitor = inhibitor;
     this.clusters = clusters;
-    this.inputs = inputs;
+    this.inputs = inputs; //List of lists
+    this.inputConnections = incomingConnections; //List of tuples [[1,2], [1,3], [2,3]]
+    this.outgoingConnections = outgoingConnections;
+    this.outputs = [];
+  }
+  
+  DistributeInputs(inputs){
+    
+  }
+  
+  SendOutputs(){
+    for (i = 0; i < this.clusters.length; i++){this.outputs.push(this.clusters[i].GetOutputs());}
+    //do something with he connections
   }
 }

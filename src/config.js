@@ -3,6 +3,7 @@ module.exports = {
   'T_r' : 10
   'T_f' : 40
   'y' : 2
+  'threshhold' : 2.5
   
   function minimum(a){
     var min = a[0]; for(var i = 0, j = a.length; i < j; i++){min = (a[i] < min) ? a[i] : min;}
