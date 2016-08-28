@@ -93,21 +93,26 @@ class Inhibitor{
 
 class Layer{
   //contains clusters, may have multiple time scales within but has no interconnecting neurons
-  constructor(inhibitor : Inhibitor, clusters, inputs, incomingConnections, outgoingConnections){
+  constructor(inhibitor, clusters, inputs, incomingConnections){
     this.inhibitor = inhibitor;
     this.clusters = clusters;
     this.inputs = inputs; //List of lists
     this.inputConnections = incomingConnections; //List of tuples [[1,2], [1,3], [2,3]]
-    this.outgoingConnections = outgoingConnections;
     this.outputs = [];
   }
   
   DistributeInputs(inputs){
-    
+    for (a = 0; a < this.inputConnections.length; a++){
+      [x,y] = this.inputConnections[a];
+      this.clusters[y].SetInputs(this.inputs[x]);
+    }
+  }
+  
+  GetOutputs(){
+    for (i = 0; i < this.clusters.length; i++){this.outputs.push(this.clusters[i].GetOutputs());}
   }
   
   SendOutputs(){
-    for (i = 0; i < this.clusters.length; i++){this.outputs.push(this.clusters[i].GetOutputs());}
-    //do something with he connections
+    //somehow connect to next layer
   }
 }
