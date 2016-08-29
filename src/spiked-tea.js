@@ -82,8 +82,7 @@ class Cluster{
     return outputs;
   }
   
-  Simulate(inputs){
-    SetInputs(inputs);
+  Simulate(){
     DistributeInputs();
     return GetOutputs();
   }
@@ -127,7 +126,7 @@ class Layer{
   }
   
   GetOutputs(){
-    for (i = 0; i < this.clusters.length; i++){this.outputs.push(this.clusters[i].GetOutputs());}
+    for (i = 0; i < this.clusters.length; i++){this.outputs.push(this.clusters[i].Simulate());}
   }
   
   Simulate(inputs){
@@ -141,8 +140,15 @@ class SNN {
   constructor(numLayers, numClusters, numNeurons){
     this.neurons = config.fillArray(Neuron(config.threshhold), numNeurons);
     this.clusters = config.fillArray(Cluster(this.neurons, []), numClusters);
-    this.layers = config.fillArray(Layer(Inhibitor, this.clusters, [], []), numLayers);
+    this.layers = CreateReducingLayers();
     this.numLayers = numLayers;
+  }
+  
+  CreateReducingLayers(){
+    layers = [];
+    slope = (numClusters-1)/numLayers;
+    for (i = 0; i < this.numLayers; i++){layers.push(Layer(Inhibitor, this.clusters.slice(0, Math.ceil(i*slope), [], [])));}
+    return layers;
   }
   
   CreateNetworkConnections(){
