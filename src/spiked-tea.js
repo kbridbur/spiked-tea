@@ -1,5 +1,4 @@
 // Spiked tea
-// @author Anthony Liu
 // @author Kyle Bridburg
 // @date 2016-08-22
 
@@ -33,7 +32,7 @@ class Neuron{
         return i;
       }
     }
-  return null;
+    return null;
   }
 }
 
@@ -141,6 +140,7 @@ class SNN {
     this.neurons = config.fillArray(Neuron(config.threshhold), numNeurons);
     this.clusters = config.fillArray(Cluster(this.neurons, []), numClusters);
     this.layers = CreateReducingLayers();
+    CreateNetworkConnections();
     this.numLayers = numLayers;
     this.slope = (numClusters-1)/numLayers;
   }
@@ -169,12 +169,16 @@ class SNN {
       layerConnections = []
       int numClustersInCurrentLayer = Math.ceil((layer)*this.slope);
       int numClustersInPreviousLayer = Math.ceil((layer-1)*this.slope);
+
       for (int j = 0; j < numClustersInCurrentLayer; j++){
         layerConnections.push([j,j]);
       }
-      for (int j = numClustersInCurrentLayer; j < numClustersInPreviousLayer; j++){
-        //assign these connections randomly among the clusters numbering between 0 and numClustersInCurrentLayer
+
+      //assign extra clusters to distribute evenly across the next Layer
+      for (int k = numClustersInCurrentLaye; k < numClustersInPreviousLayer; k++){
+        layerConnections.push([k, numClustersInPreviousLayer-k]);
       }
+      connections.push(layerConnections);
     }
     for (int layer = 0; layer < this.numLayers; layer++){
       currentLayer = this.layers[layer];
@@ -188,8 +192,5 @@ class SNN {
       layerOutput = this.layers[i].SimulateLayer(layerOutput);
     }
     return layerOutput;
-  }
-  learn() {
-    return 1;
   }
 }
